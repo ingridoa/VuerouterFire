@@ -12,7 +12,7 @@
   import { mapActions } from "vuex";
   
   export default {
-    name: "UserformComp",
+    name: "RegistroView",
   
     methods: {
       ...mapActions(["addUser"]),
