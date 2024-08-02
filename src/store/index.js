@@ -1,47 +1,32 @@
 import { createStore } from "vuex";
-import firebaseApp from "../Config/firebaseConfig.js";
-import {
-  getFirestore,
-  collection,
-  onSnapshot,
-  addDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { auth, signInWithEmailAndPassword } from "../Config/firebaseConfig.js";
+import router from "@/router/index.js";
 
 export default createStore({
   state: {
-    users: [],
+    loggedUser: false,
   },
-  getters: {},
   mutations: {
-    setUsers(state, users) {
-      state.users = users;
+    setLoggedUser(state, user) {
+      state.loggedUser = user;
     },
   },
   actions: {
-    async getUsers({ commit }) {
-      const db = getFirestore(firebaseApp);
-      const usersRef = collection(db, "users");
-      onSnapshot(usersRef, (snapshot) => {
-        const users = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        commit("setUsers", users);
-      });
-    },
-    async addUser(context, {name, email}) {
-      const db = getFirestore(firebaseApp);
-      const usersRef = collection(db, "users");
-      await addDoc(usersRef, { name: name, email: email });
+    async login(context, data) {
+      console.log(data);
+      try {
+        const loginResponse = await signInWithEmailAndPassword(
+          auth,
+          data.email,
+          data.password
+        );
+        console.log(loginResponse);
+        context.commit("setLoggedUser", loginResponse);
 
-    },
-    async deleteUser(context, userId) {
-      const db = getFirestore(firebaseApp);
-      const userDoc = doc(db, "users", userId);
-      await deleteDoc(userDoc);
+        router.push("/");
+      } catch (error) {
+        console.log("Error en el inicio de sesión", error);
+      }
     },
   },
-  modules: {},
 });

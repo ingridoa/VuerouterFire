@@ -18,3 +18,21 @@ const app = initializeApp(firebaseConfig);
 
 
 export default app
+
+/* Métodos de firebase Auth */
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+
+
+// Initialize Firebase
+export const auth = getAuth(app);
+
+export {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+};

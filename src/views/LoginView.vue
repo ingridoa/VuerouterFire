@@ -1,6 +1,7 @@
 <template>
-    <div class="loginClass">
-      <h2>Login Inicial</h2>
+  <div class="loginClass">
+    <h2>Login Inicial</h2>
+    <form @submit.prevent="handleSubmit">
       <label for="">Email</label>
       <input v-model="email" type="email" placeholder="Ingrese su correo..." />
       <br />
@@ -11,24 +12,29 @@
         placeholder="Ingrese su contraseña..."
       />
       <br />
-      <button @click="login({ email, password })">Iniciar sesión</button>
-    </div>
-  </template>
-  
-  <script>
-  import { mapActions } from "vuex";
-  
-  export default {
-    name: "LoginView",
-    data() {
-      return {
-        email: "",
-        password: "",
-      };
+      <button type="submit">Iniciar sesión</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  name: "LoginView",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    ...mapActions(["login"]),
+    handleSubmit() {
+      console.log("Email:", this.email);
+      console.log("Password:", this.password);
+      this.login({ email: this.email, password: this.password });
     },
-  
-    methods: {
-      ...mapActions(["login"]),
-    },
-  };
-  </script>
+  },
+};
+</script>
